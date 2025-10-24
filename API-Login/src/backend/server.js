@@ -61,9 +61,7 @@ app.post("/api/login", (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
-});
+
 
 app.get("/testdb", (req, res) => {
    db.get("SELECT * FROM users WHERE email = ?", [req.params.email], async (err, user) => {
@@ -73,10 +71,43 @@ app.get("/testdb", (req, res) => {
   });
 });
 
+
 app.get("/allusers", (req, res) => {
-   db.get("SELECT * FROM users WHERE 1", async (err, user) => {
+   db.all("SELECT * FROM users WHERE 1", async (err, user) => {
     if (err) return res.status(500).json({ message: "Erro no servidor." });
     if (!user) return res.status(400).json({ message: "Usuário não encontrado." });
     return res.status(200).json({ message: user });
   });
+});
+
+
+app.get("/userid/:userid", (req, res) => {
+  db.get("SELECT * FROM users WHERE id = ?", [req.params.userid], async (err, user) => {
+    if (err) return res.status(500).json({ message: "Erro no servidor." });
+    if (!user) return res.status(400).json({ message: "Usuário não encontrado." });
+    return res.status(200).json({ message: user });
+  });
+});
+
+
+app.get("/useremail/:useremail", (req, res) => {
+  db.get("SELECT * FROM users WHERE email = ?", [req.params.useremail], async (err, user) => {
+    if (err) return res.status(500).json({ message: "Erro no servidor." });
+    if (!user) return res.status(400).json({ message: "Usuário não encontrado." });
+    return res.status(200).json({ message: user });
+  });
+});
+
+
+app.get("/username/:username", (req, res) => {
+  db.get("SELECT * FROM users WHERE username = ?", [req.params.username], async (err, user) => {
+    if (err) return res.status(500).json({ message: "Erro no servidor." });
+    if (!user) return res.status(400).json({ message: "Usuário não encontrado." });
+    return res.status(200).json({ message: user });
+  });
+});
+
+
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
 });
