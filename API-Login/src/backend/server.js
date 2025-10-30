@@ -107,6 +107,20 @@ app.get("/username/:username", (req, res) => {
   });
 });
 
+app.get("/api/delete/:id", (req, res) => {
+  const userId = req.params.id;
+
+  db.run("DELETE FROM users WHERE id = ?", [userId], function (err) {
+    if (err) {
+      return res.status(500).json({ message: "Erro ao deletar usuário." });
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ message: "Usuário não encontrado." });
+    }
+    return res.status(200).json({ message: "Usuário deletado com sucesso!" });
+  });
+})
+
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
